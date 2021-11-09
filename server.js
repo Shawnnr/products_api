@@ -30,10 +30,19 @@ const product = mongoose.model("shoprite products",{
     }
 })
 
-app.get("/api/product/:name", async (req, res) => {
+app.get("/product/:name", async (req, res) => {
     try {
         var item = await product.find(({ name: { $regex: `${req.params.name}`, $options: "i" }}));
         res.send(item);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+app.get("/products", async(req,res)=>{
+    try {
+        var items = await product.find({});
+        res.send(items);
     } catch (error) {
         res.status(500).send(error);
     }
