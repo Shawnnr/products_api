@@ -5,9 +5,11 @@ const mongoose = require("mongoose")
 const dotenv = require("dotenv")
 dotenv.config()
 const BodyParser = require("body-parser");
+const cors = require("cors")
 
 app.use(BodyParser.json());
 app.use(BodyParser.urlencoded({ extended: true }));
+app.use(cors())
 
 async function connectToDatabase(){
     await mongoose.connect(
