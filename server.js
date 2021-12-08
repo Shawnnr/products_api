@@ -21,7 +21,7 @@ async function connectToDatabase(){
 connectToDatabase()
 
 
-const product = mongoose.model("shoprite products",{
+const shoptiteProducts = mongoose.model("shoprite products",{
     name:{
         type: String,
         required:true
@@ -32,21 +32,41 @@ const product = mongoose.model("shoprite products",{
     }
 })
 
+const pnpProducts = mongoose.model("pnp products",{
+    name:{
+        type: String,
+        require:true
+    },
+    price: {
+        type:String,
+        require:true
+    }
+})
+
 app.get("/product/:name", async (req, res) => {
     try {
-        var item = await product.find(({ name: { $regex: `${req.params.name}`, $options: "i" }}));
+        var item = await shoptiteProducts.find(({ name: { $regex: `${req.params.name}`, $options: "i" }}));
         res.send(item);
     } catch (error) {
         res.status(500).send(error);
     }
 });
 
-app.get("/products", async(req,res)=>{
+app.get("/products/shoprite", async(req,res)=>{
     try {
-        var items = await product.find({});
+        const items = await shoptiteProducts.find({});
         res.send(items);
     } catch (error) {
-        res.status(500).send(error);
+        res.send(error);
     }
 });
+
+app.get("/products/pnp", async(req,res)=>{
+    try{
+        const items = await pnpProducts.find({});
+        res.send(items)
+    } catch(error){
+        res.send(error)
+    }
+})
 app.listen(PORT,()=>{console.log(`Server running ans listening at port ${PORT}`)})
